@@ -1,13 +1,33 @@
-const { Students } = require('../models/models');
+const { Students, Lessons } = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class StudentsController {
 
     async create(req, res, next) {
         try {
-            const { title } = req.body
-            const student = await Lessons.create({ title })
-            return res.json(lesson)
+            const { name, lessonsId } = req.body
+            const student = await Students.create({ name, lessonsId })
+            return res.json(student)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    };
+    async findAll(req, res, next) {
+        try {
+            const students = await Students.findAll()
+            return res.json(students)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    };
+    async getOne(req, res, next) {
+        try {
+            const { id } = req.params
+            const type = await Students.findOne({
+                where: { id },
+                include: [Lessons]
+            })
+            return res.json(type)
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
@@ -15,7 +35,7 @@ class StudentsController {
     async update(req, res, next) {
         try {
             const { id } = req.body
-            const updateStudent = await Lessons.update(req.body, {
+            const updateStudent = await Students.update(req.body, {
                 where: { id: id }
             })
             return res.json(req.body)
@@ -23,7 +43,6 @@ class StudentsController {
             next(ApiError.badRequest(e.message))
         }
     };
-
 
     async delete(req, res, next) {
         try {
@@ -40,4 +59,4 @@ class StudentsController {
 
 };
 
-module.exports = new studentsController()
+module.exports = new StudentsController()

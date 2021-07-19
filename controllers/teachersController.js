@@ -1,43 +1,64 @@
-const { Teachers } = require('../models/models');
+const { Teachers, Lessons } = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class TeacherController {
 
-    async create(req, res, next) {
-        try {
-            const { name } = req.body
-            const teacher = await Lessons.create({ title })
-            return res.json(teacher)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
-        }
-    };
-    async update(req, res, next) {
-        try {
-            const { id } = req.body
-            const updateTeacher = await Lessons.update(req.body, {
-                where: { id: id }
-            })
-            return res.json(req.body)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
-        }
-    };
+   async create(req, res, next) {
+      try {
+         const { name, } = req.body
+         const teacher = await Teachers.create({ name })
+         return res.json(teacher)
+      } catch (e) {
+         next(ApiError.badRequest(e.message))
+      }
+   };
+   async findAll(req, res, next) {
+      try {
+         const teachers = await Teachers.findAll()
+         return res.json(teachers)
+      } catch (e) {
+         next(ApiError.badRequest(e.message))
+      }
+   };
+   async getOne(req, res, next) {
+      try {
+         const { id } = req.params
+         const type = await Teachers.findOne({
+            where: { id },
+            include: [Lessons]
+         })
+         return res.json(type)
+      } catch (e) {
+         next(ApiError.badRequest(e.message))
+      }
+   };
+
+   async update(req, res, next) {
+      try {
+         const { id } = req.body
+         const updateTeacher = await Teachers.update(req.body, {
+            where: { id: id }
+         })
+         return res.json(req.body)
+      } catch (e) {
+         next(ApiError.badRequest(e.message))
+      }
+   };
 
 
-    async delete(req, res, next) {
-        try {
-            const { id } = req.params
-            const deleteTeacher = await Device.destroy({
-                where: { id },
-            })
-            return res.json(deleteTeacher)
-        } catch (e) {
-            next(ApiError.badRequest(e.message))
-        }
-    };
+   async delete(req, res, next) {
+      try {
+         const { id } = req.params
+         const deleteTeacher = await Teachers.destroy({
+            where: { id },
+         })
+         return res.json(deleteTeacher)
+      } catch (e) {
+         next(ApiError.badRequest(e.message))
+      }
+   };
 
 
 };
 
-module.exports = new teacherController()
+module.exports = new TeacherController()

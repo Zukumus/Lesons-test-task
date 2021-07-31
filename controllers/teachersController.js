@@ -1,4 +1,4 @@
-const { Teachers, Lessons } = require('../models/models');
+const { Lessons, Students, Teachers, TeachersLessons, StudentsLessons } = require('../models/models');
 const ApiError = require('../error/ApiError');
 
 class TeacherController {
@@ -23,11 +23,23 @@ class TeacherController {
    async getOne(req, res, next) {
       try {
          const { id } = req.params
-         const type = await Teachers.findOne({
+         const teacher = await Teachers.findOne({
             where: { id },
-            include: [Lessons]
-         })
-         return res.json(type)
+            attributes: ['id', 'name'],
+            include: {
+               model: TeachersLessons,
+               attributes: ['dateLesson', 'daysLessons', 'lessonsCount', 'teacherId', 'lessonId', 'status'],
+               include: [{
+                  model: Students,
+                  attributes: ['id', 'name',],
+                  StudentsLessons,
+                  through: { attributes: ['teachersLessonId', 'visit'] },
+               },
+                  Lessons,
+               ]
+            }
+         });
+         return res.json(teacher)
       } catch (e) {
          next(ApiError.badRequest(e.message))
       }

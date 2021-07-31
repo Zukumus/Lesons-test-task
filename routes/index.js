@@ -1,5 +1,6 @@
 const Router = require('express');
-// const infoLessons = require('./infoLessons');
+const studentLessons = require('./studentLessons');
+const teachersLessons = require('./teacherLessons');
 const lessons = require('./lessons');
 const students = require('./students');
 const teachers = require('./teachers');
@@ -7,9 +8,10 @@ const teachers = require('./teachers');
 
 const router = new Router();
 
-router.use('/lessons', lessons)
-router.use('/students', students)
-router.use('/teachers', teachers)
-// router.use('/infoLessons', infoLessons)
+router.use('/studentLessons', studentLessons);
+router.use('/teachersLessons', teachersLessons);
+router.use('/lessons', lessons);
+router.use('/students', students);
+router.use('/teachers', teachers);
 
 module.exports = router

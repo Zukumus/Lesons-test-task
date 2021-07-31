@@ -60,7 +60,7 @@ class StudentsController {
     async delete(req, res, next) {
         try {
             const { id } = req.params
-            const deleteStudent = await Device.destroy({
+            const deleteStudent = await Students.destroy({
                 where: { id },
             })
             return res.json(deleteStudent)

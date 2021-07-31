@@ -26,7 +26,7 @@ const TeachersLessons = sequelize.define('teachersLessons', {
     lessonsCount: { type: DataTypes.NUMBER, allowNull: true },
     status: { type: DataTypes.INTEGER, defaultValue: 0 },
 })
-const StudentsLessons = sequelize.define('informationSchool', {
+const StudentsLessons = sequelize.define('studentLessons', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
     visit: { type: DataTypes.BOOLEAN, allowNull: true }
 })
@@ -58,29 +58,3 @@ module.exports = {
     TeachersLessons
 };
 
-
-//SL->IL
-
-// const InfoLessons = sequelize.define('infoLessons', {
-//     StudentsId: {
-//         type: DataTypes.INTEGER,
-//         references: {
-//             model: Students, // 'Students' would also work
-//             key: 'id'
-//         }
-//     },
-//     TeachersId: {
-//         type: DataTypes.INTEGER,
-//         references: {
-//             model: Teachers, // 'Teachers' would also work
-//             key: 'id'
-//         }
-//     },
-//     LessonsId: {
-//         type: DataTypes.INTEGER,
-//         references: {
-//             model: Lessons, // 'Actors' would also work
-//             key: 'id'
-//         }
-//     }
-// });

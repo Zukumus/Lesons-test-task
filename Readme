@@ -1,0 +1,44 @@
+router.use('/studentLessons', studentLessons);
+router.use('/teachersLessons', teachersLessons);
+router.use('/lessons', lessons);
+router.use('/students', students);
+router.use('/teachers', teachers);
+
+method all 
+router.post('/', controller.create);
+router.get('/', controller.findAll);
+router.get('/:id', controller.getOne);
+router.put('/', controller.update);
+router.delete('/', controller.delete);
+
+Model;
+const Lessons = sequelize.define('lessons', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    title: { type: DataTypes.STRING, unique: false, allowNull: false },
+    firstDate: { type: DataTypes.DATEONLY, allowNull: true },
+    lastDate: { type: DataTypes.DATEONLY, allowNull: true },
+});
+
+const Students = sequelize.define('students', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, unique: false, allowNull: false },
+    // date: { type: DataTypes.STRING,  },
+});
+
+const Teachers = sequelize.define('teachers', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: { type: DataTypes.STRING, allowNull: false }
+});
+
+const TeachersLessons = sequelize.define('teachersLessons', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
+    daysLessons: { type: DataTypes.NUMBER, allowNull: true },
+    dateLesson: { type: DataTypes.DATEONLY, allowNull: true },
+    lessonsCount: { type: DataTypes.NUMBER, allowNull: true },
+    status: { type: DataTypes.INTEGER, defaultValue: 0 },
+})
+const StudentsLessons = sequelize.define('studentLessons', {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
+    visit: { type: DataTypes.BOOLEAN, allowNull: true }
+})
+

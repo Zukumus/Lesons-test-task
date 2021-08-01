@@ -6,14 +6,17 @@ class TeacherLessonsController {
 
    async Create(req, res, next) {
       try {
-         const { lessonId, dateLesson, lessonsCount } = req.body
-         const lesson = await Lessons.findByPk(lessonId)
+         const { lessonId, teacherId, dateLesson, daysLessons, lessonsCount, } = req.body;
+         const lesson = await Lessons.findByPk(lessonId);
+         let teachersLessons = await TeachersLessons.findAll()
+         let countLessons = teachersLessons.filter(key => key.lessonId == lessonId)
          let lessonTeacher;
-         if (lesson.id == lessonId && dateLesson <= lesson.lastDate) {
-            const { lessonId, teacherId, daysLessons, dateLesson, lessonsCount } = req.body;
-            lessonTeacher = await TeachersLessons.create({ lessonId, teacherId, daysLessons, dateLesson, lessonsCount });
-         } else {
-            next(ApiError.badRequest('you cannot create a lesson after the last date of the lesson'))
+         if (countLessons.length < lessonsCount) {
+            if (lesson.id == lessonId && dateLesson <= lesson.lastDate) {
+               lessonTeacher = await TeachersLessons.create({ lessonId, teacherId, daysLessons, dateLesson, lessonsCount });
+            } else {
+               next(ApiError.badRequest('you cannot create a lesson after the last date of the lesson'))
+            }
          }
          return res.json(lessonTeacher)
       } catch (e) {

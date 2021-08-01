@@ -20,14 +20,14 @@ const Teachers = sequelize.define('teachers', {
 
 const TeachersLessons = sequelize.define('teachersLessons', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
-    daysLessons: { type: DataTypes.NUMBER, allowNull: true },
+    daysLessons: { type: DataTypes.STRING, allowNull: true },
     dateLesson: { type: DataTypes.DATEONLY, allowNull: true },
-    lessonsCount: { type: DataTypes.NUMBER, allowNull: true },
+    lessonsCount: { type: DataTypes.INTEGER, allowNull: true },
     status: { type: DataTypes.INTEGER, defaultValue: 0 },
 })
 const StudentsLessons = sequelize.define('studentLessons', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, allowNull: false },
-    visit: { type: DataTypes.BOOLEAN, allowNull: true }
+    visit: { type: DataTypes.BOOLEAN, allowNull: true },
 })
 
 
@@ -38,6 +38,7 @@ TeachersLessons.belongsTo(Lessons);
 TeachersLessons.belongsTo(Teachers);
 Lessons.hasMany(TeachersLessons);
 Teachers.hasMany(TeachersLessons);
+
 //creating a connection between models many to many. Student Teacher through model TeachersLessons
 Students.belongsToMany(TeachersLessons, { through: StudentsLessons });
 TeachersLessons.belongsToMany(Students, { through: StudentsLessons });

@@ -17,12 +17,17 @@ class LessonsController {
     };
     async findAll(req, res, next) {
         try {
-            const lessons = await Lessons.findAndCountAll()
+            let { page, limit, } = req.query
+            page = page || 1
+            limit = limit || 5
+            let offset = page * limit - limit
+            const lessons = await Lessons.findAndCountAll({ page, limit, })
             return res.json(lessons)
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
     };
+
     async getOne(req, res, next) {
         try {
             const { id } = req.params
@@ -37,23 +42,19 @@ class LessonsController {
                         attributes: ['id', 'name',],
                         StudentsLessons,
                         through: { attributes: ['teachersLessonId', 'visit'] },
-                        // attributes: {
-                        //     include: [[Sequelize.fn("COUNT", Sequelize.col("informationSchools.visit")), "sensorCount"]]
-                        // },
                     },
                         Teachers,
-                        // attributes: ['visit'],
-
-                        // through: { attributes: ['visit'] },
-
                     ]
                 }
             });
-            // const data = [...'sss'.split(' '), lesson]
-            // const countLessens = lesson
-            // let data = countLessens.reduce((visit = 0, item.informationSchool.visit) => visit + item.informationSchool.visit === true, 0)
-            return res.json(data)
-            // return res.json(lesson.teachersLessons[0].students[0].informationSchools)
+            let visitData = [...lesson.teachersLessons[0].students]
+            let countVisitTrue = visitData.filter(visit => visit.studentLessons.visit === true)
+
+            return res.json({
+                'countVisitTrue': countVisitTrue.length,
+                'countVisit': visitData.length,
+                'infoLesson': lesson,
+            })
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }

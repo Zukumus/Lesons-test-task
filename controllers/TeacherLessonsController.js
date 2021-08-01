@@ -6,7 +6,7 @@ class TeacherLessonsController {
 
    async Create(req, res, next) {
       try {
-         const { lessonId, dateLesson } = req.body
+         const { lessonId, dateLesson, lessonsCount } = req.body
          const lesson = await Lessons.findByPk(lessonId)
          let lessonTeacher;
          if (lesson.id == lessonId && dateLesson <= lesson.lastDate) {

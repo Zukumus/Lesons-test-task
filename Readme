@@ -1,10 +1,10 @@
 
- 
-	router.use('/studentLessons', studentLessons);
-	router.use('/teachersLessons', teachersLessons);
-	router.use('/lessons', lessons);
-	router.use('/students', students);
-	router.use('/teachers', teachers);
+Rout path:
+	'/studentLessons'
+	'/teachersLessons'
+	'/lessons'
+	'/students'
+	'/teachers'
 	
 	method all 
 	router.post('/', controller.create);
